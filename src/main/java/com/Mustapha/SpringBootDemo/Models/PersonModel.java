@@ -1,9 +1,7 @@
 package com.Mustapha.SpringBootDemo.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.Mustapha.SpringBootDemo.Security.AppUser;
+import jakarta.persistence.*;
 
 @Entity
 public class PersonModel {
@@ -15,6 +13,21 @@ public class PersonModel {
     private String firstName;
     private String lastName;
     private String Description;
+
+    @OneToOne(mappedBy = "personModel")
+    private AppUser appUser;
+
+    public long getId() {
+        return id;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
+    }
 
     public String getFirstName() {
         return firstName;
