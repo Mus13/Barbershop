@@ -3,6 +3,9 @@ package com.Mustapha.SpringBootDemo.Models;
 import com.Mustapha.SpringBootDemo.Security.AppUser;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class PersonModel {
 
@@ -16,6 +19,15 @@ public class PersonModel {
 
     @OneToOne(mappedBy = "personModel")
     private AppUser appUser;
+
+    @ManyToMany
+    @JoinTable(
+            name = "staff_services",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    private List<ServiceModel> services = new ArrayList<>();
+
 
     public long getId() {
         return id;
@@ -51,5 +63,23 @@ public class PersonModel {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    public List<ServiceModel> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceModel> services) {
+        this.services = services;
+    }
+
+    public void addService(ServiceModel service) {
+        services.add(service);
+        service.addStaff(this);
+    }
+
+    public void removeService(ServiceModel service) {
+        services.remove(service);
+        service.removeStaff(this);
     }
 }

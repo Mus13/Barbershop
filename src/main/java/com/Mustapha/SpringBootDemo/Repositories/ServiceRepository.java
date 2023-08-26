@@ -9,7 +9,5 @@ import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "services", path = "services")
 public interface ServiceRepository extends PagingAndSortingRepository<ServiceModel, Long>, CrudRepository<ServiceModel,Long> {
-
     List<ServiceModel> findAll();
-
 }
