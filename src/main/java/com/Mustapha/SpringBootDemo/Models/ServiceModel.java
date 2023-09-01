@@ -13,8 +13,18 @@ public class ServiceModel {
     private long id;
     private String name;
     private String Description;
+    private String price;
     @ManyToMany(mappedBy = "services")
     private List<PersonModel> staff = new ArrayList<>();
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     @ManyToMany
     @JoinTable(
             name = "service_products",
