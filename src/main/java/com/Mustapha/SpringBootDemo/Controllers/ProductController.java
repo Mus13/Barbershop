@@ -27,6 +27,6 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('OWNER')")
     @PutMapping("/updateProduct")
     public void updateProduct(@RequestBody ProductModel product) {
-        productRepository.update(product);
+        productRepository.updateProduct(product);
     }
 }

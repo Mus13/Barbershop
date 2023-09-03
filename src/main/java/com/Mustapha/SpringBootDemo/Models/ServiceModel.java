@@ -1,7 +1,6 @@
 package com.Mustapha.SpringBootDemo.Models;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,11 @@ public class ServiceModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     private String Description;
     private String price;
     @ManyToMany(mappedBy = "services")

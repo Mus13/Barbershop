@@ -10,5 +10,5 @@ public interface ProductRepository extends PagingAndSortingRepository<ProductMod
     List<ProductModel> findAll();
     ProductModel save(ProductModel product);
     void delete(ProductModel product);
-    ProductModel update(ProductModel updatedProduct);
+    ProductModel updateProduct(ProductModel updatedProduct);
 }

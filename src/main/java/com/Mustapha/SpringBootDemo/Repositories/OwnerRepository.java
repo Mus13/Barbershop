@@ -14,7 +14,7 @@ public interface OwnerRepository  extends PersonRepository {
     }
 
     @Override
-    default PersonModel update(PersonModel updatedPerson) {
+    default PersonModel updatePerson(PersonModel updatedPerson) {
         return null;
     }
 }

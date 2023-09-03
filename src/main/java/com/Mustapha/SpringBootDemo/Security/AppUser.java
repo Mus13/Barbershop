@@ -1,7 +1,7 @@
 package com.Mustapha.SpringBootDemo.Security;
 
 import com.Mustapha.SpringBootDemo.Models.PersonModel;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.Set;
 

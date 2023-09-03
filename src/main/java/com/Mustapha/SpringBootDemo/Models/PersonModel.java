@@ -1,8 +1,8 @@
 package com.Mustapha.SpringBootDemo.Models;
 
 import com.Mustapha.SpringBootDemo.Security.AppUser;
-import jakarta.persistence.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

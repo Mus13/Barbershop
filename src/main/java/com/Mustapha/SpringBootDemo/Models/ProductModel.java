@@ -1,12 +1,15 @@
 package com.Mustapha.SpringBootDemo.Models;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class ProductModel {
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

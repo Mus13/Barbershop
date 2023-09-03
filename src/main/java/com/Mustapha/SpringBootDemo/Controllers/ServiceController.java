@@ -27,6 +27,6 @@ public class ServiceController {
     @PreAuthorize("hasAnyRole('OWNER')")
     @PutMapping("/updateService")
     public void updateService(@RequestBody ServiceModel service) {
-        serviceRepository.update(service);
+        serviceRepository.updateService(service);
     }
 }

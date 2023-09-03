@@ -40,7 +40,7 @@ public class StaffController {
     @PreAuthorize("hasAnyRole('OWNER', 'STAFF')")
     @PutMapping("/updateStaff")
     public void updateStaff(@RequestBody PersonModel person) {
-        staffRepository.update(person);
+        staffRepository.updatePerson(person);
     }
 
 }

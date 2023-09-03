@@ -10,5 +10,5 @@ public interface ServiceRepository extends PagingAndSortingRepository<ServiceMod
     List<ServiceModel> findAll();
     ServiceModel save(ServiceModel service);
     void delete(ServiceModel service);
-    ServiceModel update(ServiceModel updatedService);
+    ServiceModel updateService(ServiceModel updatedService);
 }
