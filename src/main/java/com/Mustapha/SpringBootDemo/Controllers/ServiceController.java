@@ -13,8 +13,8 @@ public class ServiceController {
     private ServiceRepository serviceRepository;
 
     @PreAuthorize("hasRole('OWNER')")
-    @PostMapping("/addService")
-    public void addService(@RequestBody ServiceModel service) {
+    @PostMapping("/saveService")
+    public void saveService(@RequestBody ServiceModel service) {
         serviceRepository.save(service);
     }
 
@@ -22,11 +22,5 @@ public class ServiceController {
     @DeleteMapping("/deleteService")
     public void deleteService(@RequestBody ServiceModel service) {
         serviceRepository.delete(service);
-    }
-
-    @PreAuthorize("hasAnyRole('OWNER')")
-    @PutMapping("/updateService")
-    public void updateService(@RequestBody ServiceModel service) {
-        serviceRepository.updateService(service);
     }
 }

@@ -10,7 +10,5 @@ public interface PersonRepository extends PagingAndSortingRepository<PersonModel
     List<PersonModel> findAll();
     PersonModel save(PersonModel person);
     void delete(PersonModel person);
-    PersonModel updatePerson(PersonModel updatedPerson);
-
 
 }

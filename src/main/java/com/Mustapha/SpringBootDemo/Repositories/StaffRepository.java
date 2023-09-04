@@ -1,7 +1,6 @@
 package com.Mustapha.SpringBootDemo.Repositories;
 
 import com.Mustapha.SpringBootDemo.Models.PersonModel;
-import com.Mustapha.SpringBootDemo.Models.ServiceModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,25 +9,12 @@ import java.util.List;
 public interface StaffRepository  extends PersonRepository {
 
     @Override
-    default PersonModel save(PersonModel person) {
-        return null;
-    }
-
-    @Override
-    default PersonModel updatePerson(PersonModel updatedPerson) {
-        return null;
-    }
-
-    default void addService(PersonModel staff,ServiceModel service){
-
-    }
-
-    default void deleteService(PersonModel staff,ServiceModel service){
-
-    }
-
-    @Override
     default List<PersonModel> findAll() {
+        return null;
+    }
+
+    @Override
+    default PersonModel save(PersonModel person) {
         return null;
     }
 

@@ -8,13 +8,12 @@ import java.util.Optional;
 
 @Repository
 public interface OwnerRepository  extends PersonRepository {
-
     default Optional<PersonModel> findByRole(Role role) {
         return null;
     }
 
     @Override
-    default PersonModel updatePerson(PersonModel updatedPerson) {
+    default PersonModel save(PersonModel updatedPerson) {
         return null;
     }
 }

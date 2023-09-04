@@ -19,13 +19,6 @@ public interface ClientRepository extends PersonRepository{
     }
 
     @Override
-    default void delete(PersonModel person) {
-
-    }
-
-    @Override
-    default PersonModel updatePerson(PersonModel updatedPerson) {
-        return null;
-    }
+    default void delete(PersonModel person) {}
 
 }

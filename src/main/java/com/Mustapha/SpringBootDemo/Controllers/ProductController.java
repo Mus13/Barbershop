@@ -13,8 +13,8 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @PreAuthorize("hasRole('OWNER')")
-    @PostMapping("/addProduct")
-    public void addProduct(@RequestBody ProductModel product) {
+    @PostMapping("/saveProduct")
+    public void saveProduct(@RequestBody ProductModel product) {
         productRepository.save(product);
     }
 
@@ -22,11 +22,5 @@ public class ProductController {
     @DeleteMapping("/deleteProduct")
     public void deleteProduct(@RequestBody ProductModel product) {
         productRepository.delete(product);
-    }
-
-    @PreAuthorize("hasAnyRole('OWNER')")
-    @PutMapping("/updateProduct")
-    public void updateProduct(@RequestBody ProductModel product) {
-        productRepository.updateProduct(product);
     }
 }
