@@ -20,4 +20,11 @@ public class SalonModel {
     public String getDescription() {
         return description;
     }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

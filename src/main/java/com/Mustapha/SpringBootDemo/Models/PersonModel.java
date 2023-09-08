@@ -12,13 +12,19 @@ public class PersonModel {
     private long id;
     private String firstName;
     private String lastName;
-    private String Description;
+    private String description;
     @OneToOne(mappedBy = "personModel")
     private AppUser appUser;
+
 
     public long getId() {
         return id;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 
     public String getFirstName() {
         return firstName;
@@ -28,6 +34,7 @@ public class PersonModel {
         this.firstName = firstName;
     }
 
+
     public String getLastName() {
         return lastName;
     }
@@ -36,12 +43,13 @@ public class PersonModel {
         this.lastName = lastName;
     }
 
+
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public AppUser getAppUser() {
