@@ -14,14 +14,14 @@ public class ClientController {
     @Autowired
     private ClientRepository clientRepository;
 
-    @PreAuthorize("hasRole('OWNER')")
+    @PreAuthorize("hasRole('ROLE_OWNER')")
     @PostMapping("/saveClient")
     public void saveClient(@RequestBody PersonModel person) {
         clientRepository.save(person);
     }
 
-    @PreAuthorize("hasRole('OWNER')")
-    @DeleteMapping("/deleteStaff")
+    @PreAuthorize("hasRole('ROLE_OWNER')")
+    @DeleteMapping("/deleteClient")
     public void deleteClient(@RequestBody PersonModel person) {
         clientRepository.delete(person);
     }

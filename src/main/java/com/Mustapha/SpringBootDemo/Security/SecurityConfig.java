@@ -11,8 +11,15 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/Welcome/**").permitAll() // Allow public access
-                .antMatchers("/Employees/**").authenticated() // Require authentication
-                .and().formLogin(); // Use form-based authentication
+                .antMatchers("/api/public/**").permitAll() // Publicly accessible URLs
+                .antMatchers("/api/private/**").hasRole("ROLE_OWNER") // Requires ROLE_ADMIN
+                .anyRequest().authenticated() // All other URLs require authentication
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
     }
 }
