@@ -1,8 +1,7 @@
 package com.Mustapha.SpringBootDemo.Models;
 
 import com.Mustapha.SpringBootDemo.Security.AppUser;
-
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class PersonModel {
@@ -16,15 +15,19 @@ public class PersonModel {
     @OneToOne(mappedBy = "personModel")
     private AppUser appUser;
 
+    public PersonModel() {
+    }
+
+    public PersonModel(String firstName, String lastName, String description, AppUser appUser) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.description = description;
+        this.appUser = appUser;
+    }
 
     public long getId() {
         return id;
     }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
 
     public String getFirstName() {
         return firstName;
@@ -33,7 +36,6 @@ public class PersonModel {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
 
     public String getLastName() {
         return lastName;
@@ -58,5 +60,16 @@ public class PersonModel {
 
     public void setAppUser(AppUser appUser) {
         this.appUser = appUser;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonModel{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", description='" + description + '\'' +
+                ", appUser=" + appUser +
+                '}';
     }
 }

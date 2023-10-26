@@ -1,12 +1,2 @@
-server:
-  port: 8080
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/barbershop
-    username: barbershop
-    password: LowKeyBarbershop
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+spring.datasource.url=jdbc:h2:mem:testdb;NON_KEYWORDS=USER
+spring.h2.console.enabled=true

@@ -1,9 +1,7 @@
 package com.Mustapha.SpringBootDemo.Security;
 
 import com.Mustapha.SpringBootDemo.Models.PersonModel;
-import javax.persistence.*;
-
-import java.util.Set;
+import jakarta.persistence.*;
 
 @Entity
 public class AppUser {
@@ -14,20 +12,23 @@ public class AppUser {
 
     private String username;
     private String password;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles;
+    private String role;
 
     @OneToOne
     @JoinColumn(name = "person_id")
     private PersonModel personModel;
 
-    public Long getId() {
-        return id;
+    public AppUser() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public AppUser(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -46,11 +47,21 @@ public class AppUser {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }
