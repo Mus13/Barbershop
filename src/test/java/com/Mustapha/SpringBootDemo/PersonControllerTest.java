@@ -95,6 +95,31 @@ public class PersonControllerTest {
     }
 
     @Test
+    public void testGetClientSuccess() throws Exception {
+        long id=0;
+        PersonModel personModel=new PersonModel("Ibrahim","Atta","Client from Biskra",new AppUser("Ibrahim_biskra","1234","Client"));
+
+        // Mock that the client with the given ID exists
+        when(personRepository.findClientById(anyLong())).thenReturn(personModel);
+
+        // Perform the GET request
+        mockMvc.perform(get("/api/clients/getClient/{id}",id))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetClientNotFound() throws Exception {
+
+        long id=0;
+        // Mock that the client with the given ID does not exist
+        when(personRepository.findClientById(anyLong())).thenReturn(null);
+
+        // Perform the GET request
+        mockMvc.perform(get("/api/clients/getClient/{id}",id))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void testSaveClientSuccess() throws Exception {
         PersonModel personModel=new PersonModel("Ibrahim","Atta","Client from Biskra",
                                                 new AppUser("Ibrahim_biskra","1234","Client"));

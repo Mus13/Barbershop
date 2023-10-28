@@ -6,3 +6,5 @@ insert into app_user     (ID,PERSON_ID,PASSWORD,ROLE,USERNAME) values (20002,100
 insert into app_user     (ID,PERSON_ID,PASSWORD,ROLE,USERNAME) values (20003,10003,'1234','Client','mahdi_eulma');
 insert into product_model(ID,NAME,DESCRIPTION,INSTRUCTIONS)    values (30001,'Sea Salt Spray','Sea Salt Spray nurtures the hair with the vitamins and proteins inside the spray bottle.','Spray on wet hair and let for few minutes for the hair to curl up.');
 insert into product_model(ID,NAME,DESCRIPTION,INSTRUCTIONS)    values (30002,'Beard Oil','The beard oil nurtures the beard and give it a shine and soft touch.','Put small amount in hands and gently rub the beard for a minutes.');
+insert into service_model(ID,NAME,DESCRIPTION,PRICE)           values (40001,'HairCut','The hair cut includes washing the hair and giving suggestions for hairstyles that could properly fit specifically each client.','50 pln');
+insert into service_model(ID,NAME,DESCRIPTION,PRICE)           values (40002,'Beard','The beard is faded and trimmed based on the clients request.','30 pln');

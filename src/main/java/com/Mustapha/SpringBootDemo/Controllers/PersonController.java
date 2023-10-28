@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/api")
 public class PersonController {
 
     @Autowired
     private PersonRepository personRepository;
 
-    @GetMapping("/getAll")
+    @GetMapping("/clients/getAll")
     public ResponseEntity<List<PersonModel>> getAllClients() {
         // Retrieve the list of clients from the repository
         List<PersonModel> clients = personRepository.retrieveClients();
@@ -29,18 +29,30 @@ public class PersonController {
         }
     }
 
-    @PostMapping("/saveClient")
+    @GetMapping("/clients/getClient/{id}")
+    public ResponseEntity<PersonModel> getClientById(@PathVariable long id) {
+        // Retrieve the list of clients from the repository
+        PersonModel client = personRepository.findClientById(id);
+        if (client==null) {
+            // If no client is found, return a 404 Not Found response
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(client);
+        }
+    }
+
+    @PostMapping("/clients/saveClient")
     public ResponseEntity<String> saveClient(@RequestBody PersonModel person) {
         if (person != null) {
             // Save the person object using the repository
             personRepository.save(person);
             return ResponseEntity.ok("Client saved successfully");
         } else {
-            return ResponseEntity.badRequest().body("Invalid person data");
+            return ResponseEntity.badRequest().body("Invalid client data");
         }
     }
 
-    @DeleteMapping("/deleteClient/{id}")
+    @DeleteMapping("/clients/deleteClient/{id}")
     public ResponseEntity<String> deleteClient(@PathVariable long id) {
         PersonModel personModel=personRepository.findClientById(id);
         // Check if the client with the given ID exists

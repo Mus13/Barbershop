@@ -35,7 +35,7 @@ public class ProductRepository{
 
     }
 
-    public void remove(ProductModel person){
-        entityManager.remove(person);
+    public void remove(ProductModel product){
+        entityManager.remove(product);
     }
 }

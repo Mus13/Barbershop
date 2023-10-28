@@ -15,12 +15,17 @@ public class ServiceModel {
     private String Description;
     private String price;
 
-    public long getId() {
-        return id;
+    public ServiceModel() {
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public ServiceModel(String name, String description, String price) {
+        this.name = name;
+        Description = description;
+        this.price = price;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -45,5 +50,15 @@ public class ServiceModel {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", Description='" + Description + '\'' +
+                ", price='" + price + '\'' +
+                '}';
     }
 }
