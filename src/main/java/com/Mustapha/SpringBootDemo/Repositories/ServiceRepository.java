@@ -16,8 +16,7 @@ public class ServiceRepository{
     EntityManager entityManager;
     
     public List<ServiceModel> retrieveServices(){
-        List<ServiceModel> services = entityManager.createQuery("Select s From ServiceModel s", ServiceModel.class).getResultList();
-        return services;
+        return  entityManager.createQuery("Select s From ServiceModel s", ServiceModel.class).getResultList();
     }
 
     public ServiceModel findServiceById(long id){

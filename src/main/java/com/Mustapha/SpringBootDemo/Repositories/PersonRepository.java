@@ -16,8 +16,7 @@ public class PersonRepository{
     EntityManager entityManager;
 
     public List<PersonModel> retrieveAllByRole(String role){
-        List<PersonModel> personModelList=entityManager.createQuery("Select cl From PersonModel cl where cl.appUser.role = '"+role+"'", PersonModel.class).getResultList();
-        return personModelList;
+        return  entityManager.createQuery("Select cl From PersonModel cl where cl.appUser.role = '"+role+"'", PersonModel.class).getResultList();
     }
 
     public PersonModel findById(long id){

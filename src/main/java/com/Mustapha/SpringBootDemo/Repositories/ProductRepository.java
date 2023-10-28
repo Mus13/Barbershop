@@ -16,8 +16,7 @@ public class ProductRepository{
     EntityManager entityManager;
 
     public List<ProductModel> retrieveProducts(){
-        List<ProductModel> products = entityManager.createQuery("Select p From ProductModel p", ProductModel.class).getResultList();
-        return products;
+        return entityManager.createQuery("Select p From ProductModel p", ProductModel.class).getResultList();
     }
 
     public ProductModel findProductById(long id){
