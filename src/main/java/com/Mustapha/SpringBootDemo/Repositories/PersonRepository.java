@@ -15,12 +15,12 @@ public class PersonRepository{
     @Autowired
     EntityManager entityManager;
 
-    public List<PersonModel> retrieveClients(){
-        List<PersonModel> clients=entityManager.createQuery("Select cl From PersonModel cl where cl.appUser.role = 'Client'", PersonModel.class).getResultList();
-        return clients;
+    public List<PersonModel> retrieveAllByRole(String role){
+        List<PersonModel> personModelList=entityManager.createQuery("Select cl From PersonModel cl where cl.appUser.role = '"+role+"'", PersonModel.class).getResultList();
+        return personModelList;
     }
 
-    public PersonModel findClientById(long id){
+    public PersonModel findById(long id){
         return entityManager.find(PersonModel.class,id);
     }
 

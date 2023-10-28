@@ -50,7 +50,7 @@ public class PersonControllerTest {
         long clientId = 10001;
         PersonModel personModel=new PersonModel("Ibrahim","Atta","Client from Biskra",new AppUser("Ibrahim_biskra","1234","Client"));
         // Mock that the client with the given ID exists
-        when(personRepository.findClientById(clientId)).thenReturn(personModel);
+        when(personRepository.findById(clientId)).thenReturn(personModel);
         doNothing().when(personRepository).remove(any(PersonModel.class));
         // Perform the DELETE request
         mockMvc.perform(delete("/api/clients/deleteClient/{id}", clientId))
@@ -62,7 +62,7 @@ public class PersonControllerTest {
         long clientId = 1;
 
         // Mock that the client with the given ID does not exist
-        when(personRepository.findClientById(clientId)).thenReturn(null);
+        when(personRepository.findById(clientId)).thenReturn(null);
 
         // Perform the DELETE request
         mockMvc.perform(delete("/api/clients/deleteClient/{id}", clientId))
@@ -75,7 +75,7 @@ public class PersonControllerTest {
         PersonModel personModel=new PersonModel("Ibrahim","Atta","Client from Biskra",new AppUser("Ibrahim_biskra","1234","Client"));
         clients.add(personModel);
         // Mock that the client with the given ID exists
-        when(personRepository.retrieveClients()).thenReturn(clients);
+        when(personRepository.retrieveAllByRole("Client")).thenReturn(clients);
 
         // Perform the GET request
         mockMvc.perform(get("/api/clients/getAll"))
@@ -87,7 +87,7 @@ public class PersonControllerTest {
         List<PersonModel> clients=new ArrayList<PersonModel>();
 
         // Mock that the client with the given ID does not exist
-        when(personRepository.retrieveClients()).thenReturn(clients);
+        when(personRepository.retrieveAllByRole("Client")).thenReturn(clients);
 
         // Perform the GET request
         mockMvc.perform(get("/api/clients/getAll"))
@@ -100,7 +100,7 @@ public class PersonControllerTest {
         PersonModel personModel=new PersonModel("Ibrahim","Atta","Client from Biskra",new AppUser("Ibrahim_biskra","1234","Client"));
 
         // Mock that the client with the given ID exists
-        when(personRepository.findClientById(anyLong())).thenReturn(personModel);
+        when(personRepository.findById(anyLong())).thenReturn(personModel);
 
         // Perform the GET request
         mockMvc.perform(get("/api/clients/getClient/{id}",id))
@@ -112,7 +112,7 @@ public class PersonControllerTest {
 
         long id=0;
         // Mock that the client with the given ID does not exist
-        when(personRepository.findClientById(anyLong())).thenReturn(null);
+        when(personRepository.findById(anyLong())).thenReturn(null);
 
         // Perform the GET request
         mockMvc.perform(get("/api/clients/getClient/{id}",id))
@@ -147,4 +147,109 @@ public class PersonControllerTest {
         verify(personRepository, times(0)).save(any(PersonModel.class));
     }
 
+
+
+
+
+    @Test
+    public void testDeleteBarberSuccess() throws Exception {
+        long barberId = 10004;
+        PersonModel personModel=new PersonModel("Ibrahim","Atta","Barber from Biskra",new AppUser("Ibrahim_biskra","1234","Barber"));
+        // Mock that the client with the given ID exists
+        when(personRepository.findById(barberId)).thenReturn(personModel);
+        doNothing().when(personRepository).remove(any(PersonModel.class));
+        // Perform the DELETE request
+        mockMvc.perform(delete("/api/barbers/deleteBarber/{id}", barberId))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteBarberNotFound() throws Exception {
+        long barberId = 1;
+
+        // Mock that the client with the given ID does not exist
+        when(personRepository.findById(barberId)).thenReturn(null);
+
+        // Perform the DELETE request
+        mockMvc.perform(delete("/api/barbers/deleteBarber/{id}", barberId))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testGetAllBarbersSuccess() throws Exception {
+        List<PersonModel> barbers=new ArrayList<PersonModel>();
+        PersonModel personModel=new PersonModel("Ibrahim","Atta","Barber from Biskra",new AppUser("Ibrahim_biskra","1234","Barber"));
+        barbers.add(personModel);
+        // Mock that the client with the given ID exists
+        when(personRepository.retrieveAllByRole("Barber")).thenReturn(barbers);
+
+        // Perform the GET request
+        mockMvc.perform(get("/api/barbers/getAll"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetAllBarbersNotFound() throws Exception {
+        List<PersonModel> barbers=new ArrayList<PersonModel>();
+
+        // Mock that the client with the given ID does not exist
+        when(personRepository.retrieveAllByRole("Barber")).thenReturn(barbers);
+
+        // Perform the GET request
+        mockMvc.perform(get("/api/barbers/getAll"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testGetBarberSuccess() throws Exception {
+        long id=0;
+        PersonModel personModel=new PersonModel("Ibrahim","Atta","Barber from Biskra",new AppUser("Ibrahim_biskra","1234","Barber"));
+
+        // Mock that the client with the given ID exists
+        when(personRepository.findById(anyLong())).thenReturn(personModel);
+
+        // Perform the GET request
+        mockMvc.perform(get("/api/barbers/getBarber/{id}",id))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetBarberNotFound() throws Exception {
+
+        long id=0;
+        // Mock that the client with the given ID does not exist
+        when(personRepository.findById(anyLong())).thenReturn(null);
+
+        // Perform the GET request
+        mockMvc.perform(get("/api/barbers/getBarber/{id}",id))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testSaveBarberSuccess() throws Exception {
+        PersonModel personModel=new PersonModel("Ibrahim","Atta","Barber from Biskra",
+                new AppUser("Ibrahim_biskra","1234","Barber"));
+
+        doNothing().when(personRepository).save(personModel);
+        // Perform the saveClient request
+        mockMvc.perform(post("/api/barbers/saveBarber")
+                        .contentType("application/json")
+                        .content(new ObjectMapper().writeValueAsString(personModel)))
+                .andExpect(status().isOk());
+        verify(personRepository, times(1)).save(any(PersonModel.class));
+    }
+
+    @Test
+    public void testSaveBarberFailure() throws Exception {
+        // Prepare a null person model
+        PersonModel personModel = null;
+
+        doNothing().when(personRepository).save(personModel);
+        // Perform the saveClient request
+        mockMvc.perform(post("/api/barbers/saveBarber")
+                        .contentType("application/json")
+                        .content(new ObjectMapper().writeValueAsString(personModel)))
+                .andExpect(status().isBadRequest());
+        verify(personRepository, times(0)).save(any(PersonModel.class));
+    }
 }
