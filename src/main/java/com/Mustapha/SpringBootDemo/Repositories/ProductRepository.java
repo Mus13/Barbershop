@@ -1,29 +1,41 @@
 package com.Mustapha.SpringBootDemo.Repositories;
 
 import com.Mustapha.SpringBootDemo.Models.ProductModel;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public interface ProductRepository extends PagingAndSortingRepository<ProductModel, Long>, CrudRepository<ProductModel,Long> {
-    default List<ProductModel> findAll(){
-        List<ProductModel> products = new ArrayList<>();
-        ProductModel productModel= new ProductModel();
-        productModel.setId(1);
-        productModel.setName("Sea Salt Spray");
-        productModel.setInstructions("Spray on wet hair and let for few minutes for the hair to curl up.");
-        productModel.setDescription("Sea Salt Spray nurtures the hair with the vitamins and proteins inside the spray bottle.");
-        products.add(productModel);
-        ProductModel secondProductModel= new ProductModel();
-        secondProductModel.setId(2);
-        secondProductModel.setName("Beard Oil");
-        secondProductModel.setInstructions("Put small amount in hands and gently rub the beard for a minutes.");
-        secondProductModel.setDescription("The beard oil nurtures the beard and give it a shine and soft touch.");
-        products.add(secondProductModel);
+@Repository
+@Transactional
+public class ProductRepository{
+
+    @Autowired
+    EntityManager entityManager;
+
+    public List<ProductModel> retrieveProducts(){
+        List<ProductModel> products = entityManager.createQuery("Select p From ProductModel p", ProductModel.class).getResultList();
         return products;
     }
-    ProductModel save(ProductModel product);
-    void delete(ProductModel product);
+
+    public ProductModel findProductById(long id){
+        return entityManager.find(ProductModel.class,id);
+    }
+
+    public void save(ProductModel productModel){
+        if ( 0 == productModel.getId()){
+            entityManager.persist(productModel);
+            entityManager.flush();
+        }else{
+            entityManager.merge(productModel);
+            entityManager.flush();
+        }
+
+    }
+
+    public void remove(ProductModel person){
+        entityManager.remove(person);
+    }
 }

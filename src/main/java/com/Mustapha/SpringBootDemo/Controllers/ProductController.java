@@ -18,6 +18,6 @@ public class ProductController {
 
     @DeleteMapping("/deleteProduct")
     public void deleteProduct(@RequestBody ProductModel product) {
-        productRepository.delete(product);
+        productRepository.remove(product);
     }
 }

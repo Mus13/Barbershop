@@ -12,7 +12,7 @@ public class PersonModel {
     private String firstName;
     private String lastName;
     private String description;
-    @OneToOne(mappedBy = "personModel")
+    @OneToOne(mappedBy = "personModel", cascade = CascadeType.REMOVE)
     private AppUser appUser;
 
     public PersonModel() {
