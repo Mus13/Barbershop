@@ -2,6 +2,7 @@ package com.Mustapha.SpringBootDemo.Repositories;
 
 import com.Mustapha.SpringBootDemo.Models.PersonModel;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,15 @@ public class PersonRepository{
     EntityManager entityManager;
 
     public List<PersonModel> retrieveAllByRole(String role){
-        return  entityManager.createQuery("Select cl From PersonModel cl where cl.appUser.role = '"+role+"'", PersonModel.class).getResultList();
+        TypedQuery<PersonModel> query = entityManager.createQuery(
+                "SELECT cl FROM PersonModel cl WHERE cl.appUser.role = :role",
+                PersonModel.class
+        );
+
+        query.setParameter("role", role);
+
+        List<PersonModel> results = query.getResultList();
+        return results;
     }
 
     public PersonModel findById(long id){

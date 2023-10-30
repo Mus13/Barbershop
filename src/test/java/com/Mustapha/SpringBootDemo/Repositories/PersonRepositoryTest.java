@@ -1,4 +1,4 @@
-package com.Mustapha.SpringBootDemo;
+package com.Mustapha.SpringBootDemo.Repositories;
 
 
 import com.Mustapha.SpringBootDemo.Models.PersonModel;

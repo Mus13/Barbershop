@@ -1,8 +1,7 @@
-package com.Mustapha.SpringBootDemo;
+package com.Mustapha.SpringBootDemo.Repositories;
 
 
 import com.Mustapha.SpringBootDemo.Models.ProductModel;
-import com.Mustapha.SpringBootDemo.Repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

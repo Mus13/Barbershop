@@ -24,6 +24,10 @@ public class ReviewModel {
         this.description = description;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getRating() {
         return rating;
     }
@@ -54,6 +58,7 @@ public class ReviewModel {
                 "id=" + id +
                 ", rating='" + rating + '\'' +
                 ", description='" + description + '\'' +
+                ", appointment='" + appointmentModel + '\'' +
                 '}';
     }
 }

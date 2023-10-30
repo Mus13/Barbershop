@@ -1,9 +1,9 @@
 package com.Mustapha.SpringBootDemo.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class ServiceModel {
@@ -12,15 +12,17 @@ public class ServiceModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private String Description;
+    private String description;
     private String price;
+    @OneToMany(mappedBy = "service", cascade = CascadeType.REMOVE)
+    private List<AppointmentModel> appointments=new ArrayList<AppointmentModel>();
 
     public ServiceModel() {
     }
 
     public ServiceModel(String name, String description, String price) {
         this.name = name;
-        Description = description;
+        this.description = description;
         this.price = price;
     }
 
@@ -37,11 +39,11 @@ public class ServiceModel {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public String getPrice() {
@@ -57,7 +59,7 @@ public class ServiceModel {
         return "ServiceModel{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", Description='" + Description + '\'' +
+                ", description='" + description + '\'' +
                 ", price='" + price + '\'' +
                 '}';
     }

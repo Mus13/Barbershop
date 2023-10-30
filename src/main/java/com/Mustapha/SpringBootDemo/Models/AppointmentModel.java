@@ -23,7 +23,7 @@ public class AppointmentModel {
     @ManyToOne
     @JoinColumn(name = "service_id")
     private ServiceModel service;
-    @OneToOne(mappedBy = "appointmentModel")
+    @OneToOne(mappedBy = "appointmentModel", cascade = CascadeType.REMOVE)
     private ReviewModel review;
 
     public AppointmentModel() {
@@ -33,6 +33,10 @@ public class AppointmentModel {
         this.date_appointment = date;
         this.time_start = time_start;
         this.time_end = time_end;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public Date getDate_appointment() {
@@ -108,7 +112,6 @@ public class AppointmentModel {
                 ", client=" + client +
                 ", barber=" + barber +
                 ", service=" + service +
-                (review!=null?", review=" + review:"")+
                 '}';
     }
 }
