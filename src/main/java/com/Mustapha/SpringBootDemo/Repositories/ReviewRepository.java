@@ -19,7 +19,6 @@ public class ReviewRepository {
         return entityManager.createQuery("Select r From ReviewModel r", ReviewModel.class).getResultList();
     }
 
-
     public ReviewModel findReviewById(long id){
         return entityManager.find(ReviewModel.class,id);
     }

@@ -34,7 +34,7 @@ public class AppointmentRepository {
         List<AppointmentModel> appointments = query.getResultList();
 
         if (!appointments.isEmpty()) {
-            return appointments; // Assuming only one appointment is associated with a barber.
+            return appointments;
         } else {
             return null; // No appointments found for the specified barberId.
         }

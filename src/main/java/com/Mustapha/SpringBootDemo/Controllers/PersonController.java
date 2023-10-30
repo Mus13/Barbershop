@@ -1,7 +1,9 @@
 package com.Mustapha.SpringBootDemo.Controllers;
 
 
+import com.Mustapha.SpringBootDemo.Models.AppointmentModel;
 import com.Mustapha.SpringBootDemo.Models.PersonModel;
+import com.Mustapha.SpringBootDemo.Repositories.AppointmentRepository;
 import com.Mustapha.SpringBootDemo.Repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ public class PersonController {
 
     @Autowired
     private PersonRepository personRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @GetMapping("/clients/getAll")
     public ResponseEntity<List<PersonModel>> getAllClients() {
@@ -38,6 +42,18 @@ public class PersonController {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(client);
+        }
+    }
+
+    @GetMapping("/clients/{id}/appointments")
+    public ResponseEntity<List<AppointmentModel>> getAppointmentsByClientId(@PathVariable long id) {
+        // Retrieve the list of clients from the repository
+        List<AppointmentModel> appointments = appointmentRepository.findAppointmentsByClientId(id);
+        if (appointments.isEmpty()) {
+            // If no client is found, return a 404 Not Found response
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(appointments);
         }
     }
 
@@ -87,6 +103,18 @@ public class PersonController {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(barber);
+        }
+    }
+
+    @GetMapping("/barbers/{id}/appointments")
+    public ResponseEntity<List<AppointmentModel>> getAppointmentsByBarberId(@PathVariable long id) {
+        // Retrieve the list of clients from the repository
+        List<AppointmentModel> appointments = appointmentRepository.findAppointmentsByBarberId(id);
+        if (appointments.isEmpty()) {
+            // If no client is found, return a 404 Not Found response
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(appointments);
         }
     }
 
