@@ -3,6 +3,9 @@ package com.Mustapha.SpringBootDemo.Models;
 import com.Mustapha.SpringBootDemo.Security.AppUser;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class PersonModel {
 
@@ -14,7 +17,10 @@ public class PersonModel {
     private String description;
     @OneToOne(mappedBy = "personModel", cascade = CascadeType.REMOVE)
     private AppUser appUser;
-
+    @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE)
+    private List<AppointmentModel> appointments_client=new ArrayList<AppointmentModel>();
+    @OneToMany(mappedBy = "barber", cascade = CascadeType.REMOVE)
+    private List<AppointmentModel> appointments_barber=new ArrayList<AppointmentModel>();
     public PersonModel() {
     }
 
@@ -60,6 +66,22 @@ public class PersonModel {
 
     public void setAppUser(AppUser appUser) {
         this.appUser = appUser;
+    }
+
+    public List<AppointmentModel> getAppointments_client() {
+        return appointments_client;
+    }
+
+    public void add_Appointment_client(AppointmentModel appointment_client) {
+        this.appointments_client.add(appointment_client) ;
+    }
+
+    public List<AppointmentModel> getAppointments_barber() {
+        return appointments_barber;
+    }
+
+    public void add_Appointments_barber(AppointmentModel appointment_barber) {
+        this.appointments_barber.add(appointment_barber);
     }
 
     @Override
