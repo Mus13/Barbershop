@@ -1,4 +1,4 @@
-package com.Mustapha.SpringBootDemo;
+package com.Mustapha.SpringBootDemo.Controllers;
 
 
 import com.Mustapha.SpringBootDemo.Controllers.ServiceController;

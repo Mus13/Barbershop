@@ -1,7 +1,6 @@
-package com.Mustapha.SpringBootDemo;
+package com.Mustapha.SpringBootDemo.Controllers;
 
 
-import com.Mustapha.SpringBootDemo.Controllers.ProductController;
 import com.Mustapha.SpringBootDemo.Models.ProductModel;
 import com.Mustapha.SpringBootDemo.Repositories.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 public class ProductControllerTest {
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     @InjectMocks
@@ -70,7 +66,7 @@ public class ProductControllerTest {
 
     @Test
     public void testGetAllProductsSuccess() throws Exception {
-        List<ProductModel> products=new ArrayList<ProductModel>();
+        List<ProductModel> products=new ArrayList<>();
         ProductModel productModel=new ProductModel("LisaP Spray","Spray with Keratine to help straightening the hair.","Spray on hair and gently massage the hair and let rest for few minutes.");
         products.add(productModel);
         // Mock that the product with the given ID exists
@@ -83,7 +79,7 @@ public class ProductControllerTest {
 
     @Test
     public void testGetAllProductsNotFound() throws Exception {
-        List<ProductModel> products=new ArrayList<ProductModel>();
+        List<ProductModel> products=new ArrayList<>();
 
         // Mock that the product with the given ID does not exist
         when(productRepository.retrieveProducts()).thenReturn(products);
@@ -133,14 +129,11 @@ public class ProductControllerTest {
 
     @Test
     public void testSaveProductFailure() throws Exception {
-        // Prepare a null product model
-        ProductModel productModel = null;
-
-        doNothing().when(productRepository).save(productModel);
+        doNothing().when(productRepository).save(null);
         // Perform the saveProduct request
         mockMvc.perform(post("/api/products/saveProduct")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(productModel)))
+                        .content(new ObjectMapper().writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
         verify(productRepository, times(0)).save(any(ProductModel.class));
     }

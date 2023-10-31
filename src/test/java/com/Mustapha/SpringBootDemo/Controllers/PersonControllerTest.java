@@ -1,8 +1,9 @@
-package com.Mustapha.SpringBootDemo;
+package com.Mustapha.SpringBootDemo.Controllers;
 
 
-import com.Mustapha.SpringBootDemo.Controllers.PersonController;
+import com.Mustapha.SpringBootDemo.Models.AppointmentModel;
 import com.Mustapha.SpringBootDemo.Models.PersonModel;
+import com.Mustapha.SpringBootDemo.Repositories.AppointmentRepository;
 import com.Mustapha.SpringBootDemo.Repositories.PersonRepository;
 import com.Mustapha.SpringBootDemo.Security.AppUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,14 +12,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -28,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 public class PersonControllerTest {
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     @InjectMocks
@@ -36,6 +37,8 @@ public class PersonControllerTest {
 
     @Mock
     private PersonRepository personRepository;
+    @Mock
+    private AppointmentRepository appointmentRepository;
 
     private MockMvc mockMvc;
 
@@ -71,7 +74,8 @@ public class PersonControllerTest {
 
     @Test
     public void testGetAllClientsSuccess() throws Exception {
-        List<PersonModel> clients=new ArrayList<PersonModel>();
+        List<PersonModel> clients;
+        clients = new ArrayList<>();
         PersonModel personModel=new PersonModel("Ibrahim","Atta","Client from Biskra",new AppUser("Ibrahim_biskra","1234","Client"));
         clients.add(personModel);
         // Mock that the client with the given ID exists
@@ -84,7 +88,7 @@ public class PersonControllerTest {
 
     @Test
     public void testGetAllClientsNotFound() throws Exception {
-        List<PersonModel> clients=new ArrayList<PersonModel>();
+        List<PersonModel> clients= new ArrayList<>();
 
         // Mock that the client with the given ID does not exist
         when(personRepository.retrieveAllByRole("Client")).thenReturn(clients);
@@ -135,14 +139,10 @@ public class PersonControllerTest {
 
     @Test
     public void testSaveClientFailure() throws Exception {
-        // Prepare a null person model
-        PersonModel personModel = null;
-
-        doNothing().when(personRepository).save(personModel);
-        // Perform the saveClient request
+        doNothing().when(personRepository).save(null);
         mockMvc.perform(post("/api/clients/saveClient")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(personModel)))
+                        .content(new ObjectMapper().writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
         verify(personRepository, times(0)).save(any(PersonModel.class));
     }
@@ -177,7 +177,7 @@ public class PersonControllerTest {
 
     @Test
     public void testGetAllBarbersSuccess() throws Exception {
-        List<PersonModel> barbers=new ArrayList<PersonModel>();
+        List<PersonModel> barbers=new ArrayList<>();
         PersonModel personModel=new PersonModel("Ibrahim","Atta","Barber from Biskra",new AppUser("Ibrahim_biskra","1234","Barber"));
         barbers.add(personModel);
         // Mock that the client with the given ID exists
@@ -190,7 +190,7 @@ public class PersonControllerTest {
 
     @Test
     public void testGetAllBarbersNotFound() throws Exception {
-        List<PersonModel> barbers=new ArrayList<PersonModel>();
+        List<PersonModel> barbers= new ArrayList<>();
 
         // Mock that the client with the given ID does not exist
         when(personRepository.retrieveAllByRole("Barber")).thenReturn(barbers);
@@ -240,16 +240,63 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void testSaveBarberFailure() throws Exception {
-        // Prepare a null person model
-        PersonModel personModel = null;
+    public void testGetAppointmentsByClientIdSuccess() throws Exception {
+        List<AppointmentModel> appointments= new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.NOVEMBER, 5);
+        Date date = new Date(calendar.getTime().getTime());
+        Time firstTime = Time.valueOf("11:30:00");
+        Time secondTime = Time.valueOf("12:00:00");
+        AppointmentModel appointment = new AppointmentModel(date, firstTime, secondTime);
+        appointments.add(appointment);
+        when(appointmentRepository.findAppointmentsByClientId(anyLong())).thenReturn(appointments);
+        // Perform the saveClient request
+        mockMvc.perform(get("/api/clients/{id}/appointments",1))
+                .andExpect(status().isOk());
+    }
 
-        doNothing().when(personRepository).save(personModel);
+    @Test
+    public void testGetAppointmentsByClientIdFailure() throws Exception {
+        List<AppointmentModel> appointments= new ArrayList<>();
+        when(appointmentRepository.findAppointmentsByClientId(anyLong())).thenReturn(appointments);
+        // Perform the saveClient request
+        mockMvc.perform(get("/api/clients/{id}/appointments",1))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testSaveBarberFailure() throws Exception {
+        doNothing().when(personRepository).save(null);
         // Perform the saveClient request
         mockMvc.perform(post("/api/barbers/saveBarber")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(personModel)))
+                        .content(new ObjectMapper().writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
         verify(personRepository, times(0)).save(any(PersonModel.class));
+    }
+
+    @Test
+    public void testGetAppointmentsByBarberIdSuccess() throws Exception {
+        List<AppointmentModel> appointments= new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.NOVEMBER, 5);
+        Date date = new Date(calendar.getTime().getTime());
+        Time firstTime = Time.valueOf("11:30:00");
+        Time secondTime = Time.valueOf("12:00:00");
+        AppointmentModel appointment = new AppointmentModel(date, firstTime, secondTime);
+        appointments.add(appointment);
+        when(appointmentRepository.findAppointmentsByBarberId(anyLong())).thenReturn(appointments);
+        // Perform the saveClient request
+        mockMvc.perform(get("/api/barbers/{id}/appointments",1))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetAppointmentsByBarberIdFailure() throws Exception {
+        List<AppointmentModel> appointments= new ArrayList<>();
+        when(appointmentRepository.findAppointmentsByBarberId(anyLong())).thenReturn(appointments);
+        // Perform the saveClient request
+        mockMvc.perform(get("/api/barbers/{id}/appointments",1))
+                .andExpect(status().isNotFound());
     }
 }

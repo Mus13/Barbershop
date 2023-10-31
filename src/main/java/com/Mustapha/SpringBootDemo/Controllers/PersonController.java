@@ -50,7 +50,6 @@ public class PersonController {
         // Retrieve the list of clients from the repository
         List<AppointmentModel> appointments = appointmentRepository.findAppointmentsByClientId(id);
         if (appointments.isEmpty()) {
-            // If no client is found, return a 404 Not Found response
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(appointments);
@@ -111,7 +110,6 @@ public class PersonController {
         // Retrieve the list of clients from the repository
         List<AppointmentModel> appointments = appointmentRepository.findAppointmentsByBarberId(id);
         if (appointments.isEmpty()) {
-            // If no client is found, return a 404 Not Found response
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(appointments);
