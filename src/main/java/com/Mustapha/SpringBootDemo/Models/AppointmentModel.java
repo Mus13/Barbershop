@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 
+@SuppressWarnings("ALL")
 @Entity
 public class AppointmentModel {
 

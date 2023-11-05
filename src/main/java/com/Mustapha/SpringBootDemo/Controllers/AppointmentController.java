@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -17,7 +18,7 @@ public class AppointmentController {
     @GetMapping("/getAll")
     public ResponseEntity<List<AppointmentModel>> getAllAppointment() {
         // Retrieve the list of clients from the repository
-        List<AppointmentModel> appointments = appointmentRepository.retrieveAppointments();
+        List<AppointmentModel> appointments = appointmentRepository.findAll();
         if (appointments.isEmpty()) {
             // If no products are found, return a 404 Not Found response
             return ResponseEntity.notFound().build();
@@ -28,15 +29,9 @@ public class AppointmentController {
     }
 
     @GetMapping("/getAppointment/{id}")
-    public ResponseEntity<AppointmentModel> getAppointmentById(@PathVariable long id) {
-        // Retrieve the list of clients from the repository
-        AppointmentModel appointment = appointmentRepository.findAppointmentById(id);
-        if (appointment==null) {
-            // If no client is found, return a 404 Not Found response
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(appointment);
-        }
+    public ResponseEntity<AppointmentModel> getAppointmentById(@PathVariable long id){
+        Optional<AppointmentModel> appointment = appointmentRepository.findById(id);
+        return appointment.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/saveAppointment")
@@ -52,10 +47,10 @@ public class AppointmentController {
 
     @DeleteMapping("/deleteAppointment/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable long id) {
-        AppointmentModel appointment=appointmentRepository.findAppointmentById(id);
+        Optional<AppointmentModel> appointment=appointmentRepository.findById(id);
         // Check if the client with the given ID exists
-        if (appointment!=null) {
-            appointmentRepository.remove(appointment);
+        if (appointment.isPresent()) {
+            appointmentRepository.delete(appointment.get());
             return ResponseEntity.ok("Review with ID " + id + " deleted successfully");
         } else {
             return ResponseEntity.notFound().build();

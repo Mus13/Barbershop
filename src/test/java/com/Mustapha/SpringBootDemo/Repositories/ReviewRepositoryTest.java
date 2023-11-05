@@ -31,7 +31,7 @@ class ReviewRepositoryTest {
     @Transactional
     void save() {
         ReviewModel review=new ReviewModel("5","Awesome service!");
-        review.setAppointmentModel(appointmentRepository.findAppointmentById(50002));
+        review.setAppointmentModel(appointmentRepository.findById(50002L).get());
         reviewRepository.save(review);
         logger.info("\nReviews after saving -> {}",reviewRepository.retrieveReviews());
     }

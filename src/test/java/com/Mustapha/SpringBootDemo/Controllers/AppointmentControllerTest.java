@@ -3,6 +3,7 @@ package com.Mustapha.SpringBootDemo.Controllers;
 import com.Mustapha.SpringBootDemo.Models.AppointmentModel;
 import com.Mustapha.SpringBootDemo.Repositories.AppointmentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,10 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -53,7 +51,7 @@ class AppointmentControllerTest {
         Time secondTime = Time.valueOf("12:00:00");
         AppointmentModel appointment = new AppointmentModel(date, firstTime, secondTime);
         appointmentModels.add(appointment);
-        when(appointmentRepository.retrieveAppointments()).thenReturn(appointmentModels);
+        when(appointmentRepository.findAll()).thenReturn(appointmentModels);
         // Perform the GET request
         mockMvc.perform(get("/api/appointments/getAll"))
                 .andExpect(status().isOk());
@@ -62,7 +60,7 @@ class AppointmentControllerTest {
     @Test
     void getAllAppointmentFailure() throws Exception {
         List<AppointmentModel> appointmentModels=new ArrayList<>();
-        when(appointmentRepository.retrieveAppointments()).thenReturn(appointmentModels);
+        when(appointmentRepository.findAll()).thenReturn(appointmentModels);
         // Perform the GET request
         mockMvc.perform(get("/api/appointments/getAll"))
                 .andExpect(status().isNotFound());
@@ -77,7 +75,7 @@ class AppointmentControllerTest {
         Time firstTime = Time.valueOf("11:30:00");
         Time secondTime = Time.valueOf("12:00:00");
         AppointmentModel appointment = new AppointmentModel(date, firstTime, secondTime);
-        when(appointmentRepository.findAppointmentById(appointmentId)).thenReturn(appointment);
+        when(appointmentRepository.findById(anyLong())).thenReturn(Optional.of(appointment));
         // Perform the GET request
         mockMvc.perform(get("/api/appointments/getAppointment/{id}",appointmentId))
                 .andExpect(status().isOk());
@@ -85,13 +83,14 @@ class AppointmentControllerTest {
 
     @Test
     void getAppointmentByIdFailure() throws Exception {
-        when(appointmentRepository.findAppointmentById(anyLong())).thenReturn(null);
+        when(appointmentRepository.findById(anyLong())).thenReturn(Optional.empty());
         // Perform the GET request
         mockMvc.perform(get("/api/appointments/getAppointment/{id}",1))
                 .andExpect(status().isNotFound());
     }
 
     @Test
+    @Transactional
     void saveAppointmentSuccess() throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2023, Calendar.NOVEMBER, 5);
@@ -99,7 +98,6 @@ class AppointmentControllerTest {
         Time firstTime = Time.valueOf("11:30:00");
         Time secondTime = Time.valueOf("12:00:00");
         AppointmentModel appointment = new AppointmentModel(date, firstTime, secondTime);
-        doNothing().when(appointmentRepository).save(appointment);
         // Perform the saveClient request
         mockMvc.perform(post("/api/appointments/saveAppointment")
                         .contentType("application/json")
@@ -110,7 +108,6 @@ class AppointmentControllerTest {
 
     @Test
     void saveAppointmentFailure() throws Exception {
-        doNothing().when(appointmentRepository).save(null);
         // Perform the saveClient request
         mockMvc.perform(post("/api/appointments/saveAppointment")
                         .contentType("application/json")
@@ -127,23 +124,23 @@ class AppointmentControllerTest {
         Time firstTime = Time.valueOf("11:30:00");
         Time secondTime = Time.valueOf("12:00:00");
         AppointmentModel appointment = new AppointmentModel(date, firstTime, secondTime);
-        when(appointmentRepository.findAppointmentById(anyLong())).thenReturn(appointment);
-        doNothing().when(appointmentRepository).remove(appointment);
+        when(appointmentRepository.findById(anyLong())).thenReturn(Optional.of(appointment));
+        doNothing().when(appointmentRepository).delete(appointment);
         // Perform the saveClient request
         mockMvc.perform(delete("/api/appointments/deleteAppointment/{id}",1))
                 .andExpect(status().isOk());
-        verify(appointmentRepository, times(1)).findAppointmentById(anyLong());
-        verify(appointmentRepository, times(1)).remove(any(AppointmentModel.class));
+        verify(appointmentRepository, times(1)).findById(anyLong());
+        verify(appointmentRepository, times(1)).delete(any(AppointmentModel.class));
     }
 
     @Test
     void deleteAppointmentFailure() throws Exception {
-        when(appointmentRepository.findAppointmentById(anyLong())).thenReturn(null);
-        doNothing().when(appointmentRepository).remove(null);
+        when(appointmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+        doNothing().when(appointmentRepository).delete(any(AppointmentModel.class));
         // Perform the saveClient request
-        mockMvc.perform(delete("/api/appointments/deleteAppointment/{id}",1))
+        mockMvc.perform(delete("/api/appointments/deleteAppointment/{id}",1L))
                 .andExpect(status().isNotFound());
-        verify(appointmentRepository, times(1)).findAppointmentById(anyLong());
-        verify(appointmentRepository, times(0)).remove(any(AppointmentModel.class));
+        verify(appointmentRepository, times(1)).findById(anyLong());
+        verify(appointmentRepository, times(0)).delete(any(AppointmentModel.class));
     }
 }
